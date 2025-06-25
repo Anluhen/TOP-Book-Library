@@ -1,3 +1,5 @@
+const myLibrary = [];
+
 // Book object constructor
 function Book(title, author, pages, read) {
     if (!new.target) {
@@ -14,10 +16,10 @@ Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read"}`;
 };
 
-theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false);
+function addBookToLibrary(title, author, pages, read) {
+    myLibrary.push(new Book(title, author, pages, read)); 
+}
 
-console.log(theHobbit.info()); // Outputs: "The Hobbit by J.R.R. Tolkien, 295 pages, not read"
+addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 295, false);
 
-console.log(Object.getPrototypeOf(theHobbit) === Book.prototype); // true
-
-console.log(theHobbit.valueOf());
+console.log(myLibrary[0].info()); // "The Hobbit by J.R.R. Tolkien, 295 pages, not read"
