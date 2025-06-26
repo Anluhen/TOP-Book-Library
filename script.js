@@ -56,3 +56,17 @@ myLibrary.forEach(book => {
 });
 
 table.appendChild(tbody);
+
+const addBtn = document.getElementById('addBookBtn');
+const dialog = document.getElementById('addBookDlg'); 
+const closeDlgBtn = document.getElementById('closeDlgBtn');
+
+// Show "Add Book" dialog
+addBtn.addEventListener('click', () => {
+    dialog.showModal();
+})
+
+// Close "Add Book" dialog
+closeDlgBtn.addEventListener('click', () => {
+    dialog.close();
+});
