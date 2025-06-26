@@ -17,6 +17,10 @@ Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read"}`;
 };
 
+Book.prototype.toggleRead = function () {
+    this.read = !this.read;
+}
+
 function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(new Book(title, author, pages, read));
 }
@@ -27,14 +31,15 @@ addBookToLibrary('1984', 'G. Orwell', 300, true);
 const table = document.getElementById('libraryTable');
 
 // Create table headers
+function drawTable(){
 const thead = document.createElement('thead');
 const headerRow = document.createElement('tr');
 
 Object.keys(myLibrary[0]).forEach(key => {
-    const th = document.createElement('th');
-    console.log(key);
-    th.textContent = key
-    headerRow.appendChild(th);
+const th = document.createElement('th');
+console.log(key);
+th.textContent = key
+headerRow.appendChild(th);
 })
 
 const deleteHeader = document.createElement('th');
@@ -43,14 +48,17 @@ headerRow.appendChild(deleteHeader); // Add a header for the delete button
 
 thead.appendChild(headerRow);
 table.appendChild(thead);
+}
 
+drawTable();
 // Create table body and populate with books
 
-function addBookToTable(newBook) {
+function updateTable() {
+    myLibrary.forEach(book => {
     const tbody = document.createElement('tbody');
     const tr = document.createElement('tr');
 
-    Object.values(newBook).forEach(value => {
+    Object.values(book).forEach(value => {
         const td = document.createElement('td');
         td.textContent = value;
         tr.appendChild(td);
@@ -61,7 +69,7 @@ function addBookToTable(newBook) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
-    deleteBtn.dataset.id = newBook.id; // Store the book id in the button
+    deleteBtn.dataset.id = book.id; // Store the book id in the button
 
     deleteBtn.addEventListener('click', (event) => {
         event.target.closest('tr').remove();
@@ -72,11 +80,10 @@ function addBookToTable(newBook) {
 
     tbody.appendChild(tr);
     table.appendChild(tbody);
+});
 };
 
-myLibrary.forEach(book => {
-    addBookToTable(book);
-});
+updateTable(); // Initial table population
 
 const addBtn = document.getElementById('addBookBtn');
 const dialog = document.getElementById('addBookDlg');
@@ -106,5 +113,5 @@ form.addEventListener('submit', (event) => {
     newBook['read'] = form.status.value === 'on' ? true : false; // Convert read checkbox to boolean
     console.log(form.status.value);
     myLibrary.push(newBook);
-    addBookToTable(newBook);
+    updateTable(newBook);
 })
