@@ -13,12 +13,12 @@ function Book(title, author, pages, read) {
     this.read = read || false; // Default to false if not provided;
 }
 
-Book.prototype.info = function() {
+Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read"}`;
 };
 
 function addBookToLibrary(title, author, pages, read) {
-    myLibrary.push(new Book(title, author, pages, read)); 
+    myLibrary.push(new Book(title, author, pages, read));
 }
 
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 295, false);
@@ -41,24 +41,27 @@ thead.appendChild(headerRow);
 table.appendChild(thead);
 
 // Create table body and populate with books
-const tbody = document.createElement('tbody');
 
-myLibrary.forEach(book => {
-    const tr = document.createElement('tr')
-    
-    Object.values(book).forEach(value => {
+function addBookToTable(newBook) {
+    const tbody = document.createElement('tbody');
+    const tr = document.createElement('tr');
+
+    Object.values(newBook).forEach(value => {
         const td = document.createElement('td');
         td.textContent = value;
         tr.appendChild(td);
     });
 
     tbody.appendChild(tr);
+    table.appendChild(tbody);
+};
+
+myLibrary.forEach(book => {
+    addBookToTable(book);
 });
 
-table.appendChild(tbody);
-
 const addBtn = document.getElementById('addBookBtn');
-const dialog = document.getElementById('addBookDlg'); 
+const dialog = document.getElementById('addBookDlg');
 const closeDlgBtn = document.getElementById('closeDlgBtn');
 
 // Show "Add Book" dialog
