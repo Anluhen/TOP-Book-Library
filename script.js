@@ -37,6 +37,10 @@ Object.keys(myLibrary[0]).forEach(key => {
     headerRow.appendChild(th);
 })
 
+const deleteHeader = document.createElement('th');
+deleteHeader.textContent = 'Delete';
+headerRow.appendChild(deleteHeader); // Add a header for the delete button
+
 thead.appendChild(headerRow);
 table.appendChild(thead);
 
@@ -51,6 +55,20 @@ function addBookToTable(newBook) {
         td.textContent = value;
         tr.appendChild(td);
     });
+
+    // Add a delete button to each row
+    const deleteTd = document.createElement('td');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.dataset.id = newBook.id; // Store the book id in the button
+
+    deleteBtn.addEventListener('click', (event) => {
+        event.target.closest('tr').remove();
+    });
+
+    deleteTd.appendChild(deleteBtn);
+    tr.appendChild(deleteTd);
 
     tbody.appendChild(tr);
     table.appendChild(tbody);
@@ -85,7 +103,7 @@ form.addEventListener('submit', (event) => {
     newBook['title'] = form.title.value;
     newBook['author'] = form.author.value;
     newBook['pages'] = Number(form.pages.value);
-    newBook['read'] =  form.status.value === 'on' ? true : false; // Convert read checkbox to boolean
+    newBook['read'] = form.status.value === 'on' ? true : false; // Convert read checkbox to boolean
     console.log(form.status.value);
     myLibrary.push(newBook);
     addBookToTable(newBook);
