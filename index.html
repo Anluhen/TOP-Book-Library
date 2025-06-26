@@ -15,8 +15,18 @@
     <button id="addBookBtn">+ Add Book</button>
 
     <dialog id="addBookDlg">
-        <form id="addForm">
+        <form id="addBookForm">
+            <h2>Add a New Book</h2>
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required>
+            <label for="author">Author:</label>
+            <input type="text" name="author" id="author" required>
+            <label for="pages">Pages:</label>
+            <input type="text" name="pages" id="pages">
+            <label for="status">Read:</label>
+            <input type="checkbox" name="status" id="status">
             <div class="actions">
+                <button type="submit" id="submitBook">Add Book</button>
                 <button type="button" id="closeDlgBtn">Close</button>
             </div>
         </form>

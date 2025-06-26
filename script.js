@@ -73,3 +73,20 @@ addBtn.addEventListener('click', () => {
 closeDlgBtn.addEventListener('click', () => {
     dialog.close();
 });
+
+// Handle "Add Book" form submission
+const form = document.getElementById('addBookForm');
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const newBook = {}
+    newBook['id'] = crypto.randomUUID(); // Generate a new UUID for id
+    newBook['title'] = form.title.value;
+    newBook['author'] = form.author.value;
+    newBook['pages'] = Number(form.pages.value);
+    newBook['read'] =  form.status.value === 'on' ? true : false; // Convert read checkbox to boolean
+    console.log(form.status.value);
+    myLibrary.push(newBook);
+    addBookToTable(newBook);
+})
