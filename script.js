@@ -31,57 +31,88 @@ addBookToLibrary('1984', 'G. Orwell', 300, true);
 const table = document.getElementById('libraryTable');
 
 // Create table headers
-function drawTable(){
-const thead = document.createElement('thead');
-const headerRow = document.createElement('tr');
+function drawTable() {
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
 
-Object.keys(myLibrary[0]).forEach(key => {
-const th = document.createElement('th');
-console.log(key);
-th.textContent = key
-headerRow.appendChild(th);
-})
+    Object.keys(myLibrary[0]).forEach(key => {
+        const th = document.createElement('th');
+        console.log(key);
+        th.textContent = key
+        headerRow.appendChild(th);
+    })
 
-const deleteHeader = document.createElement('th');
-deleteHeader.textContent = 'Delete';
-headerRow.appendChild(deleteHeader); // Add a header for the delete button
+    const deleteHeader = document.createElement('th');
+    deleteHeader.textContent = 'Delete';
+    headerRow.appendChild(deleteHeader); // Add a header for the delete button
 
-thead.appendChild(headerRow);
-table.appendChild(thead);
+    const readHeader = document.createElement('th');
+    readHeader.textContent = 'Toggle Read';
+    headerRow.appendChild(readHeader);
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 }
 
 drawTable();
 // Create table body and populate with books
 
 function updateTable() {
+    let tbody = document.querySelector('tbody')
+
+    if (tbody){
+        tbody.innerHTML = '';
+    } else {
+        tbody = document.createElement('tbody');
+    }
+    
+
     myLibrary.forEach(book => {
-    const tbody = document.createElement('tbody');
-    const tr = document.createElement('tr');
+        const tr = document.createElement('tr');
 
-    Object.values(book).forEach(value => {
-        const td = document.createElement('td');
-        td.textContent = value;
-        tr.appendChild(td);
+        Object.values(book).forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+
+        // Add a delete button to each row
+        const deleteTd = document.createElement('td');
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.classList.add('delete-btn');
+
+        deleteBtn.addEventListener('click', (event) => {
+            event.target.closest('tr').remove();
+        });
+
+        deleteTd.appendChild(deleteBtn);
+        tr.appendChild(deleteTd);
+
+        // Add a read button to each row
+        const readTd = document.createElement('td');
+        const readBtn = document.createElement('button');
+        readBtn.textContent = 'Toggle Read';
+        readBtn.classList.add('read-btn');
+        readBtn.dataset.id = book.id;
+
+        readBtn.addEventListener('click', (event) => {
+            myLibrary.forEach(currentBook => {
+                if (event.target.dataset.id === currentBook.id) {
+                    currentBook.read = !currentBook.read
+                    updateTable()
+                }
+            });
+        });
+
+        readTd.appendChild(readBtn);
+        tr.appendChild(readTd)
+        
+        tbody.appendChild(tr);
     });
 
-    // Add a delete button to each row
-    const deleteTd = document.createElement('td');
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.classList.add('delete-btn');
-    deleteBtn.dataset.id = book.id; // Store the book id in the button
-
-    deleteBtn.addEventListener('click', (event) => {
-        event.target.closest('tr').remove();
-    });
-
-    deleteTd.appendChild(deleteBtn);
-    tr.appendChild(deleteTd);
-
-    tbody.appendChild(tr);
     table.appendChild(tbody);
-});
-};
+}
 
 updateTable(); // Initial table population
 
